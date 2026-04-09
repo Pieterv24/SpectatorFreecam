@@ -3,18 +3,18 @@ package dev.pieterv24.freecam.client;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.option.KeyBinding.Category;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.KeyMapping.Category;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.resources.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 
 public class FreecamClient implements ClientModInitializer {
-    private static final Category CATEGORY = Category.create(Identifier.of("freecam", "category_name"));
-    private static KeyBinding keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    private static final Category CATEGORY = Category.register(Identifier.fromNamespaceAndPath("freecam", "category_name"));
+    private static KeyMapping keyMapping = KeyBindingHelper.registerKeyBinding(new KeyMapping(
             "key.freecam.toggle_freecam",
-            InputUtil.Type.KEYSYM,
+            InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_F7,
             CATEGORY
     ));
@@ -22,8 +22,8 @@ public class FreecamClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (client.player != null && keyBinding.wasPressed()) {
-                client.player.networkHandler.sendChatCommand("freecam");
+            if (client.player != null && keyMapping.consumeClick()) {
+                client.player.connection.sendCommand("freecam");
             }
         });
     }
