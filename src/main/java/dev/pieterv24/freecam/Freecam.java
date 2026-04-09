@@ -4,7 +4,6 @@ import dev.pieterv24.freecam.data.FreeCamEntity;
 import dev.pieterv24.freecam.data.FreecamPlayerState;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -13,12 +12,13 @@ import net.minecraft.world.level.GameType;
 import java.util.Collections;
 
 public class Freecam implements ModInitializer {
+    public static final String MOD_ID = "freecam";
 
     @Override
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register((commandDispatcher, commandRegistryAccess, registrationEnvironment) -> {
             commandDispatcher.register(
-                Commands.literal("freecam")
+                Commands.literal(MOD_ID)
                     .executes(context -> {
                         final ServerPlayer player = context.getSource().getPlayer();
                         final FreecamPlayerState playerState = ((FreeCamEntity) player).getFreecamPlayerState();
@@ -35,15 +35,6 @@ public class Freecam implements ModInitializer {
                     })
             );
         });
-
-//        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
-//            final ServerPlayerEntity player = handler.getPlayer();
-//            final FreecamPlayerState playerState = ((FreeCamEntity) player).getFreecamPlayerState();
-//
-//            if (playerState != null) {
-//                returnPlayer(player, server);
-//            }
-//        });
     }
 
     private void returnPlayer(final ServerPlayer player, final MinecraftServer server) {

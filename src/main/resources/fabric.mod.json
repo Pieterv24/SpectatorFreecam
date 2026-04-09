@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "freecam",
+  "id": "${mod_id}",
   "version": "${version}",
-  "name": "Freecam",
+  "name": "${mod_name}",
   "description": "",
   "authors": [
     "Pieterv24"
@@ -24,8 +24,8 @@
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",
-    "fabric": "*",
-    "minecraft": "${minecraft_version}",
+    "minecraft": "${minecraft_version_compat}",
+    "java": ">=25",
     "fabric-api": "*"
   }
 }
